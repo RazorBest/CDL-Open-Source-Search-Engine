@@ -3,7 +3,7 @@ The load_files() function:
     - Fetch the files (Solved)
     - Index the files using Inverted Index (Solved)
     - Apply the Porter Stemming Algorithm to minimize the search words
-    - Save the data structures for further use (in CSV files)
+    - Save the data structures for further use (Solved)
 
 The CLI (cmd module):
     - Let the user add new directories for loading
