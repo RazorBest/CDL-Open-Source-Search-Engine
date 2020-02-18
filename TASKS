@@ -1,5 +1,5 @@
 The load_files() function:
-    - Find the files in a directory and reads those files
+    - Find the files in a directory and read those files (Solved)
     - Fetch the files
     - Index the files using Inverted Index
     - Apply the Porter Stemming Algorithm to minimize the search words
