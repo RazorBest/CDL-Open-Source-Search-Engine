@@ -3,13 +3,16 @@ import re
 from bitstring import BitArray
 import pickle
 
+DATA_DIRECTORY = '.data/'
 # Words that are too common and are ignored
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
 
 
 def save_data(data, dirname):
-    path = '.data/' + dirname
+    path = DATA_DIRECTORY + dirname
+    if not os.path.isdir(DATA_DIRECTORY):
+        os.mkdir(DATA_DIRECTORY)
     with open(path, 'wb') as f:
         pickle.dump(data, f)
 
@@ -49,7 +52,18 @@ def load_files(directory):
     return wordsIndex
 
 
+def load_words_index(directory):
+    """Returns the Inverted Index from the files of a directory"""
+    path = DATA_DIRECTORY + directory
+    # If the directory wasn't indexed before
+    if not os.path.isfile(path):
+        wordsIndex = load_files(directory)
+        save_data(wordsIndex, directory)
+
+        return wordsIndex
+
+
 if __name__ == '__main__':
-    wordsIndex = load_files('example_docs')
+    wordsIndex = load_words_index('example_docs')
 
     print('wordsIndex has ' + str(len(wordsIndex)) + ' words')
