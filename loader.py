@@ -1,10 +1,17 @@
 import os
 import re
 from bitstring import BitArray
+import pickle
 
 # Words that are too common and are ignored
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
+
+
+def save_data(data, dirname):
+    path = '.data/' + dirname
+    with open(path, 'wb') as f:
+        pickle.dump(data, f)
 
 
 def load_files(directory):
