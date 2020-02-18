@@ -15,6 +15,10 @@ def save_data(data, dirname):
 
 
 def load_files(directory):
+    """Read the files from directory; index the words in 
+        files using an Inverted Index data structure and 
+        return it.
+    """
     # The data structure that keeps our words
     wordsIndex = {}
 
