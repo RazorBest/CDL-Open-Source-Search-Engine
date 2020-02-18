@@ -1,0 +1,16 @@
+The load_files() function:
+    - Find the files in a directory and reads those files
+    - Fetch the files
+    - Index the files using Inverted Index
+    - Apply the Porter Stemming Algorithm to minimize the search words
+    - Save the data structures for further use (in CSV files)
+
+The CLI (cmd module):
+    - Let the user add new directories for loading
+    - List the loaded directories
+    - Check the integrity of the loaded directories
+    - Read a query entered by the user and process it by showing the 
+documents (the most important part)
+
+The GUI (wxPython):
+    - Make all the CLI commands accessible through a GUI 
