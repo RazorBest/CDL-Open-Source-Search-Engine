@@ -5,6 +5,10 @@ The load_files() function:
     - Apply the Porter Stemming Algorithm to minimize the search words
     - Save the data structures for further use (Solved)
 
+The query() function:
+    - Process query string to BitArray operations
+    - Return the documents of the query
+
 The CLI (cmd module):
     - Let the user add new directories for loading
     - List the loaded directories
