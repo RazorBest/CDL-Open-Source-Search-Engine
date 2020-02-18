@@ -6,8 +6,8 @@ The load_files() function:
     - Save the data structures for further use (Solved)
 
 The query() function:
-    - Process query string to BitArray operations
-    - Return the documents of the query
+    - Process query string to BitArray operations;
+Return the documents of the query
 
 The CLI (cmd module):
     - Let the user add new directories for loading
@@ -17,4 +17,11 @@ The CLI (cmd module):
 documents (the most important part)
 
 The GUI (wxPython):
-    - Make all the CLI commands accessible through a GUI 
+    - Make all the CLI commands accessible through a GUI
+
+The testing:
+    - Implement an exhaustive query search
+    - Compare the results of query() from the results of the 
+exhaustive search
+    - Measure query evaluation time for big queries
+    - Measure search time for big and/or numerous files
