@@ -16,7 +16,6 @@ def save_data(data, dirname):
     with open(path, 'wb') as f:
         pickle.dump(data, f)
 
-
 def load_files(directory):
     """Read the files from directory; index the words in 
         files using an Inverted Index data structure and 
@@ -59,6 +58,11 @@ def load_words_index(directory):
     if not os.path.isfile(path):
         wordsIndex = load_files(directory)
         save_data(wordsIndex, directory)
+
+        return wordsIndex
+    
+    with open(path, 'rb') as f:
+        wordsIndex = pickle.load(f)
 
         return wordsIndex
 
