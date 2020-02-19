@@ -8,6 +8,23 @@ DATA_DIRECTORY = '.data/'
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
 
+class DirectoryInvertedIndex:
+    def __init__(self, filenames):
+        self.wordsIndex = {}
+        self.filenames = tuple(filenames)
+        self.files_count = len(filenames)
+    
+    def __iter__(self):
+        return iter(self.wordsIndex)
+
+    def __getitem__(self, key):
+        return self.wordsIndex[key]
+
+    def __setitem__(self, key, item):
+        self.wordsIndex[key] = item
+
+    def init_item(self, key):
+        self.wordsIndex[key] = BitArray(self.files_count)
 
 def save_data(data, dirname):
     path = DATA_DIRECTORY + dirname
@@ -16,17 +33,21 @@ def save_data(data, dirname):
     with open(path, 'wb') as f:
         pickle.dump(data, f)
 
+def get_sorted_filenames(directory):
+    files = os.listdir(directory)
+    files.sort()
+    return files
+
 def load_files(directory):
     """Read the files from directory; index the words in 
         files using an Inverted Index data structure and 
         return it.
     """
     # The data structure that keeps our words
-    wordsIndex = {}
+   
 
-    files = os.listdir(directory)
-    files.sort()
-    files_count = len(files)
+    files = get_sorted_filenames(directory)
+    wordsIndex = DirectoryInvertedIndex(files)
 
     # Read every file in the files list
     for file_index, filename in enumerate(files):
@@ -44,7 +65,7 @@ def load_files(directory):
 
                 if not word in wordsIndex:
                     # Initialise the apparition array for the
-                    wordsIndex[word] = BitArray(files_count)
+                    wordsIndex.init_item(word)
 
                 wordsIndex[word][file_index] = 1
 
