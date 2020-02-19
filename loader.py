@@ -25,6 +25,15 @@ class DirectoryInvertedIndex:
 
     def init_item(self, key):
         self.wordsIndex[key] = BitArray(self.files_count)
+    
+    def get_files(self, bits):
+        result_files = []
+        for bit, filename in zip(bits, self.filenames):
+            if bit:
+                result_files.append(filename)
+
+        return result_files
+
 
 def save_data(data, dirname):
     path = DATA_DIRECTORY + dirname
