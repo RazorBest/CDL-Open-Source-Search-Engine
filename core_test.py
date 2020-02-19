@@ -1,6 +1,6 @@
 import unittest
 from loader import load_words_index
-from query import search
+from search import search
 
 
 class TestQueryModule(unittest.TestCase):
