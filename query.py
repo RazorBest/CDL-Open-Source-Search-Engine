@@ -27,6 +27,10 @@ def token_split(query):
 def is_word(s):
     return not re.match(DELIMITERS, s)
 
+def consume(iterator, n):
+    '''Advance the iterator n-steps ahead. If n is none, consume entirely.'''
+    collections.deque(itertools.islice(iterator, n), maxlen=0)
+
 def find_closing_paranthesis(tokens):
     """Return index of the closing paranthesis"""
     depth = 0
@@ -62,7 +66,7 @@ def evaluate_expr(expr, wordsIndex):
         if token == '(':
             closing_index = find_closing_paranthesis(tokens[i:])
             currentBits = evaluate_expr(tokens[i:j])
-            # TODO Jump iterator to after the closing parathesis 
+            consume(iterator, j - i)
 
         if is_word(token):
             if token in wordsIndex:
