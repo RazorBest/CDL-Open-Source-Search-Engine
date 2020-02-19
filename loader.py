@@ -10,8 +10,9 @@ STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
 
 
 class DirectoryInvertedIndex:
-    def __init__(self, filenames):
+    def __init__(self, directory, filenames):
         self.wordsIndex = {}
+        self.directory = directory
         self.filenames = tuple(filenames)
         self.files_count = len(filenames)
 
@@ -58,7 +59,7 @@ def load_files(directory):
     # The data structure that keeps our words
 
     files = get_sorted_filenames(directory)
-    wordsIndex = DirectoryInvertedIndex(files)
+    wordsIndex = DirectoryInvertedIndex(directory, files)
 
     # Read every file in the files list
     for file_index, filename in enumerate(files):
