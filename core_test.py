@@ -24,7 +24,7 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test1.in")
         expected_output = self.load_expected_output("test_cases/test1.out")
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
 
     def test_search_2(self):
@@ -33,7 +33,7 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test2.in")
         expected_output = self.load_expected_output("test_cases/test2.out")
         output = search(input_query, self.wordsIndex)
-        
+
         output = search(input_query, self.wordsIndex)
 
         self.assertEqual(output, expected_output)
@@ -44,9 +44,9 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test3.in")
         expected_output = self.load_expected_output("test_cases/test3.out")
         output = search(input_query, self.wordsIndex)
-        
+
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
 
     def test_search_4(self):
@@ -55,9 +55,9 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test4.in")
         expected_output = self.load_expected_output("test_cases/test4.out")
         output = search(input_query, self.wordsIndex)
-        
+
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
 
     def test_search_5(self):
@@ -66,7 +66,7 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test5.in")
         expected_output = self.load_expected_output("test_cases/test5.out")
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
 
     def test_search_6(self):
@@ -75,7 +75,7 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test6.in")
         expected_output = self.load_expected_output("test_cases/test6.out")
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
 
     def test_search_7(self):
@@ -84,8 +84,9 @@ class TestQueryModule(unittest.TestCase):
         input_query = self.load_input("test_cases/test7.in")
         expected_output = self.load_expected_output("test_cases/test7.out")
         output = search(input_query, self.wordsIndex)
-        
+
         self.assertEqual(output, expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()
