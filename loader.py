@@ -8,12 +8,13 @@ DATA_DIRECTORY = '.data/'
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
 
+
 class DirectoryInvertedIndex:
     def __init__(self, filenames):
         self.wordsIndex = {}
         self.filenames = tuple(filenames)
         self.files_count = len(filenames)
-    
+
     def __iter__(self):
         return iter(self.wordsIndex)
 
@@ -25,7 +26,7 @@ class DirectoryInvertedIndex:
 
     def init_item(self, key):
         self.wordsIndex[key] = BitArray(self.files_count)
-    
+
     def get_files(self, bits):
         result_files = []
         for bit, filename in zip(bits, self.filenames):
@@ -42,10 +43,12 @@ def save_data(data, dirname):
     with open(path, 'wb') as f:
         pickle.dump(data, f)
 
+
 def get_sorted_filenames(directory):
     files = os.listdir(directory)
     files.sort()
     return files
+
 
 def load_files(directory):
     """Read the files from directory; index the words in 
@@ -53,7 +56,6 @@ def load_files(directory):
         return it.
     """
     # The data structure that keeps our words
-   
 
     files = get_sorted_filenames(directory)
     wordsIndex = DirectoryInvertedIndex(files)
@@ -90,7 +92,7 @@ def load_words_index(directory):
         save_data(wordsIndex, directory)
 
         return wordsIndex
-    
+
     with open(path, 'rb') as f:
         wordsIndex = pickle.load(f)
 
