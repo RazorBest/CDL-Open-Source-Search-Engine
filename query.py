@@ -2,6 +2,7 @@ from bitstring import BitArray
 from loader import load_words_index
 import re
 
+DELIMITERS = r'([\!\(\)]|&{2}|\|{2})'
 
 def token_split(query):
     """Split the query into tokens delimited 
@@ -12,20 +13,26 @@ def token_split(query):
 
     tokens = []
     for token in query:
-        token = re.split(r'([\!\(\)]|&{2}|\|{2})', token)
+        token = re.split(DELIMITERS, token)
         # Remove empty strings from list
         token = list(filter(None, token))
         tokens.extend(token)
 
     return tokens
 
+def is_word(s):
+    return not re.match(DELIMITERS)
 
 def solve_query(query, wordsIndex):
     """Return a list of files that match the query"""
     result = BitArray()
     query = query.lower()
-
     tokens = token_split(query)
+
+    word = ''
+    for token in tokens:
+        if is_word(token):
+            pass
 
     return result
 
