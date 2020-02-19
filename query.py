@@ -1,6 +1,10 @@
 from bitstring import BitArray
 from loader import load_words_index
+from loader import STOPWORDS
 import re
+import collections
+import itertools
+
 
 PARANTHESES = r'\(|\)'
 OPERATORS = r'\!|\&{2}|\|{2}'
@@ -27,9 +31,11 @@ def token_split(query):
 def is_word(s):
     return not re.match(DELIMITERS, s)
 
+
 def consume(iterator, n):
     '''Advance the iterator n-steps ahead. If n is none, consume entirely.'''
     collections.deque(itertools.islice(iterator, n), maxlen=0)
+
 
 def find_closing_paranthesis(tokens):
     """Return index of the closing paranthesis"""
@@ -39,21 +45,38 @@ def find_closing_paranthesis(tokens):
         if token == '(':
             depth += 1
         elif token == ')':
-            epth -= 1
+            depth -= 1
         if depth == 0:
             return index
-    
+
     return len(tokens)
+
+
+def apply_operator(result, currentBits, negate, state):
+    if negate:
+        currentBits = ~currentBits
+
+    if state == '&&':
+        result &= currentBits
+    elif state == '||':
+        result |= currentBits
+    else:
+        result = currentBits
+
+    return result
+
 
 def evaluate_expr(expr, wordsIndex):
     """Evaluate the expression using the logical 
         operations from BitArray
     """
-    result = BitArray()
+    result = BitArray(wordsIndex.files_count)
+    initialised = False
 
-    previousBits = BitArray()
+    currentBits = BitArray(wordsIndex.files_count)
     negate = False
     state = ''
+
     iterator = enumerate(expr)
     for i, token in iterator:
         if token == '!':
@@ -64,24 +87,23 @@ def evaluate_expr(expr, wordsIndex):
             continue
 
         if token == '(':
-            closing_index = find_closing_paranthesis(tokens[i:])
-            currentBits = evaluate_expr(tokens[i:j])
-            consume(iterator, j - i)
+            closing_index = i + find_closing_paranthesis(expr[i:])
+            currentBits = evaluate_expr(expr[i + 1:closing_index], wordsIndex)
+            consume(iterator, closing_index - i)
 
         if is_word(token):
             if token in wordsIndex:
                 currentBits = wordsIndex[token]
+            # Just ignore the stopwords
+            elif token in STOPWORDS:
+                negate = False
+                currentBits = result
             else:
-                currentBits = BitArray()
+                currentBits = BitArray(wordsIndex.files_count)
 
-        if negate:
-            currentBits = ~currentBits
-            negate = False
-
-        if state == '&&':
-            result &= currentBits
-        elif state == '||':
-            result |= currentBits
+        result = apply_operator(result, currentBits, negate, state)
+        negate = False
+        state = None
 
     return result
 
@@ -96,7 +118,16 @@ def solve_query(query, wordsIndex):
     return result
 
 
+def search(query, wordsIndex):
+    bitsResult = solve_query(query, wordsIndex)
+
+    files = wordsIndex.get_files(bitsResult)
+
+    return files
+
+
 if __name__ == '__main__':
     wordsIndex = load_words_index('example_docs')
-    query = 'Linus   || Torvalds   &&kernel && C || ((!cat &&bread) && !dog)'
-    solve_query(query, wordsIndex)
+    query = '(linus)||(kernel && runs && programming)'
+    output = search(query, wordsIndex)
+    print(output)
