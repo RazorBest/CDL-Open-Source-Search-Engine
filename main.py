@@ -10,6 +10,20 @@ class Shell(cmd.Cmd):
     file = None
     wordsIndex = None
 
+    def preloop(self):
+        self.wordsIndex = loader.load_words_index('example_docs')
+
+    def do_search(self, arg):
+        files = search.search(arg, self.wordsIndex)
+        self.print_list_of_files(files)
+
+    def do_exit(self, arg):
+        print('Exitting the shell...')
+        return True
+
+    def do_quit(self, arg):
+        self.exit(arg)
+
     def print_list_of_files(self, files):
         if len(files) == 0:
             print('Not found')
@@ -18,12 +32,6 @@ class Shell(cmd.Cmd):
         for file in files:
             print('    ' + file)
 
-    def preloop(self):
-        self.wordsIndex = loader.load_words_index('example_docs')
-
-    def do_search(self, arg):
-        files = search.search(arg, self.wordsIndex)
-        self.print_list_of_files(files)
 
 if __name__ == '__main__':
     Shell().cmdloop()
