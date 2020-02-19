@@ -2,8 +2,9 @@ from bitstring import BitArray
 from loader import load_words_index
 import re
 
-OPERATORS = r'\(|\)'
-DELIMITERS = r'([\!\(\)]|\&{2}|\|{2})'
+PARANTHESES = r'\(|\)'
+OPERATORS = r'\!|\&{2}|\|{2}'
+DELIMITERS = '(' + PARANTHESES + '|' + OPERATORS + ')'
 
 
 def token_split(query):
@@ -26,6 +27,19 @@ def token_split(query):
 def is_word(s):
     return not re.match(DELIMITERS)
 
+def find_closing_paranthesis(tokens):
+    """Return index of the closing paranthesis"""
+    depth = 0
+
+    for index, token in enumerate(tokens):
+        if token == '(':
+            depth += 1
+        elif token == ')':
+            epth -= 1
+        if depth = 0:
+            return index
+    
+    return len(tokens)
 
 def evaluate_expr(expr, wordsIndex):
     """Evaluate the expression using the logical 
@@ -37,27 +51,33 @@ def evaluate_expr(expr, wordsIndex):
     negate = False
     state = ''
     word = ''
-    for token in tokens:
+    for i, token in enumerate(tokens):
+        if token == '!':
+            negate = True
+            continue
+        if re.match(OPERATORS, token):
+            state = token
+            continue
+
+        if token == '(':
+            closing_index = find_closing_paranthesis(tokens[i:])
+            currentBits = evaluate_expr(tokens[i:j])
+            # TODO Jump iterator to after the closing parathesis 
+
         if is_word(token):
             if token in wordsIndex:
                 currentBits = wordsIndex[token]
             else:
                 currentBits = BitArray()
 
-            if negate:
-                currentBits = ~currentBits
-
-            if state == '&&':
-                result &= currentBits
-            elif state == '||':
-                result |= currentBits
-
+        if negate:
+            currentBits = ~currentBits
             negate = False
-        elif token == '!':
-            negate = True
-        elif re.match(r'\&{2}\|{2}|\!', token):
-            state = token
-        # TODO parantheses
+
+        if state == '&&':
+            result &= currentBits
+        elif state == '||':
+            result |= currentBits
 
     return result
 
@@ -67,6 +87,8 @@ def solve_query(query, wordsIndex):
 
     query = query.lower()
     tokens = token_split(query)
+    print(tokens)
+    return
     result = evaluate_expr(tokens, wordsIndex)
 
     return result
