@@ -25,7 +25,7 @@ def token_split(query):
 
 
 def is_word(s):
-    return not re.match(DELIMITERS)
+    return not re.match(DELIMITERS, s)
 
 def find_closing_paranthesis(tokens):
     """Return index of the closing paranthesis"""
@@ -36,7 +36,7 @@ def find_closing_paranthesis(tokens):
             depth += 1
         elif token == ')':
             epth -= 1
-        if depth = 0:
+        if depth == 0:
             return index
     
     return len(tokens)
@@ -50,8 +50,8 @@ def evaluate_expr(expr, wordsIndex):
     previousBits = BitArray()
     negate = False
     state = ''
-    word = ''
-    for i, token in enumerate(tokens):
+    iterator = enumerate(expr)
+    for i, token in iterator:
         if token == '!':
             negate = True
             continue
@@ -87,8 +87,6 @@ def solve_query(query, wordsIndex):
 
     query = query.lower()
     tokens = token_split(query)
-    print(tokens)
-    return
     result = evaluate_expr(tokens, wordsIndex)
 
     return result
