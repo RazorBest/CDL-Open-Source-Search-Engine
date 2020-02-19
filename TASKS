@@ -16,7 +16,7 @@ The CLI (cmd module):
     - List the loaded directories
     - Check the integrity of the loaded directories
     - Read a query entered by the user and process it by showing the 
-documents (the most important part)
+documents (the most important part) (Solved)
 
 The GUI (wxPython):
     - Make all the CLI commands accessible through a GUI
