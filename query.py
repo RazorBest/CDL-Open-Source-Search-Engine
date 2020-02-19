@@ -2,6 +2,7 @@ from bitstring import BitArray
 from loader import load_words_index
 import re
 
+OPERATORS = r'\(|\)'
 DELIMITERS = r'([\!\(\)]|\&{2}|\|{2})'
 
 
@@ -48,7 +49,7 @@ def evaluate_expr(expr, wordsIndex):
 
             if state == '&&':
                 result &= currentBits
-            elif state = '||':
+            elif state == '||':
                 result |= currentBits
 
             negate = False
@@ -73,5 +74,5 @@ def solve_query(query, wordsIndex):
 
 if __name__ == '__main__':
     wordsIndex = load_words_index('example_docs')
-    query = 'Linus   || Torvalds   &&kernel && C || (!cat && !dog)'
+    query = 'Linus   || Torvalds   &&kernel && C || ((!cat &&bread) && !dog)'
     solve_query(query, wordsIndex)
