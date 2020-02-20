@@ -4,6 +4,7 @@ import loader
 import search
 import os
 
+
 class Shell(cmd.Cmd):
     intro = "Welcome to the Open Source Search Engine. Type help or ? to list the commands.\nType search [query] to query the documents\n"
     prompt = '>>> '
@@ -19,6 +20,7 @@ class Shell(cmd.Cmd):
         """search [query]
             Search in the loaded directorires using the query
         """
+        # TODO validate the query
         files = []
         for directory, wordsIndex in self.dirIndex.items():
             files.extend(search.search(arg, wordsIndex))
@@ -29,6 +31,10 @@ class Shell(cmd.Cmd):
         """load [directory]
             Add a new directory to the search index
         """
+        if not os.path.isdir(arg):
+            print('"' + arg + '" is not a directory os does not exist')
+            return
+
         wordsIndex = loader.load_words_index_from_directory(arg)
         self.dirIndex[arg] = wordsIndex
 
@@ -36,6 +42,10 @@ class Shell(cmd.Cmd):
         """remove [directory]
             Remove a directory from the search index
         """
+        if not arg in self.dirIndex:
+            print('"' + arg + '" is not a loaded directory. Type list to see loaded directories')
+            return
+
         del self.dirIndex[arg]
         os.remove(loader.DATA_DIRECTORY + '/' + arg)
         print(arg + ' deleted')
