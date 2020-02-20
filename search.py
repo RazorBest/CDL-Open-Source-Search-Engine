@@ -1,5 +1,5 @@
 from bitstring import BitArray
-from loader import load_words_index
+from loader import load_words_index_from_directory
 from loader import STOPWORDS
 import re
 import collections
@@ -127,7 +127,7 @@ def search(query, wordsIndex):
 
 
 if __name__ == '__main__':
-    wordsIndex = load_words_index('example_docs')
+    wordsIndex = load_words_index_from_directory('example_docs')
     query = '(linus)||(kernel && runs && programming)'
     output = search(query, wordsIndex)
     print(output)
