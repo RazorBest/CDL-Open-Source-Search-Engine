@@ -100,11 +100,11 @@ def load_words_index_from_directory(directory):
 
 
 def load_words_index(directories=[]):
-    """Returns a list of Inverted Indexes corresponding 
+    """Returns a dict of Inverted Indexes corresponding 
         to the files of each directory from the directories list (or string)
     If directories is empty, load all the data from DATA_DIRECTORY 
     """
-    directoryIndex = []
+    directoryIndex = {}
 
     # Take all the preloaded wordIndexes
     if directories == []:
@@ -114,7 +114,7 @@ def load_words_index(directories=[]):
         directories = [directories]
 
     for directory in directories:
-        directoryIndex.append(load_words_index_from_directory(directory))
+        directoryIndex[directory] = load_words_index_from_directory(directory)
 
     return directoryIndex
 
