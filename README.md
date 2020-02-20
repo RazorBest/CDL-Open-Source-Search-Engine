@@ -22,3 +22,9 @@ pip install bitstring
  pip install -Iv bitstring==3.1.6
  ```
   to install a specific version.
+
+## Running the tests
+To run a "test_file" use:
+  ```
+  python -m unittest tests/[test_file]
+  ```
