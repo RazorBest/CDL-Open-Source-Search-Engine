@@ -116,10 +116,6 @@ def load_words_index(directories=[]):
     for directory in directories:
         directoryIndex.append(load_words_index_from_directory(directory))
 
-    # If list has one element, convert list to that element
-    if len(directoryIndex) == 1:
-        directoryIndex = directoryIndex[0]
-
     return directoryIndex
 
 
