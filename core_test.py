@@ -1,5 +1,5 @@
 import unittest
-from loader import load_words_index
+from loader import load_words_index_from_directory
 from search import search
 
 
@@ -18,74 +18,42 @@ class TestQueryModule(unittest.TestCase):
         f.close()
         return expected_output
 
-    def test_search_1(self):
-        self.wordsIndex = load_words_index('example_docs')
+    def template(self, dir, test_input, test_output):
+        self.wordsIndex = load_words_index_from_directory(dir)
 
-        input_query = self.load_input("test_cases/test1.in")
-        expected_output = self.load_expected_output("test_cases/test1.out")
+        input_query = self.load_input(test_input)
+        expected_output = self.load_expected_output(test_output)
         output = search(input_query, self.wordsIndex)
 
         self.assertEqual(output, expected_output)
+
+    def test_search_1(self):
+        self.template('example_docs', 'test_cases/test1.in',
+                      'test_cases/test1.out')
 
     def test_search_2(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test2.in")
-        expected_output = self.load_expected_output("test_cases/test2.out")
-        output = search(input_query, self.wordsIndex)
-
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test2.in',
+                      'test_cases/test2.out')
 
     def test_search_3(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test3.in")
-        expected_output = self.load_expected_output("test_cases/test3.out")
-        output = search(input_query, self.wordsIndex)
-
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test3.in',
+                      'test_cases/test3.out')
 
     def test_search_4(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test4.in")
-        expected_output = self.load_expected_output("test_cases/test4.out")
-        output = search(input_query, self.wordsIndex)
-
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test4.in',
+                      'test_cases/test4.out')
 
     def test_search_5(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test5.in")
-        expected_output = self.load_expected_output("test_cases/test5.out")
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test5.in',
+                      'test_cases/test5.out')
 
     def test_search_6(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test6.in")
-        expected_output = self.load_expected_output("test_cases/test6.out")
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test6.in',
+                      'test_cases/test6.out')
 
     def test_search_7(self):
-        self.wordsIndex = load_words_index('example_docs')
-
-        input_query = self.load_input("test_cases/test7.in")
-        expected_output = self.load_expected_output("test_cases/test7.out")
-        output = search(input_query, self.wordsIndex)
-
-        self.assertEqual(output, expected_output)
+        self.template('example_docs', 'test_cases/test7.in',
+                      'test_cases/test7.out')
 
 
 if __name__ == '__main__':
