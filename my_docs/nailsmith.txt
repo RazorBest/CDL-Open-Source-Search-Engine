@@ -1,0 +1,6 @@
+Nailsmith is capable of strengthening The Knight's Nail and is obsessed with the thought of forging the "perfect" nail. He will offer his services to forge The Knight's Nail in exchange for Geo and Pale Ore. Once the Nailsmith has forged the Pure Nail, he will realize that his work is done and will step outside his shop - after you speak to him, he will ask you for a final request to kill him with the use of the "perfect" nail leaving you with the choice to do his final wish or to spare his life.
+
+    Location: Nailsmith Can be found at the City of Tears
+    Progression: Nailsmith moves to Greenpath at Nailmaster Sheo's if players choose to spare his life and have acquired Great Slash.
+    Combat: Players may kill the Nailsmith.
+    Rewards: Finishing a quest grants the Happy Couple Trophy/Achievement, killing him grants the Purity Trophy/Achievement.

@@ -1,0 +1,6 @@
+Bretta is a beetle who has somehow lost hope for being rescued - she is used to being alone since everyone in town forgets about her and utterly mutters things to herself. After being rescued and found at the Fungal Wastes, she will move to her house in Dirtmouth. Inside her house, players will learn that she has fallen in love with The Knight and will also find countless materials depicting The Knight such as paintings and dolls and even writes about The Knight. However, if players choose to save Zote the Mighty at the Colosseum of Fools, Zote will move to Ditmouth where the two will meet, and Bretta immediately changes her perspective and somehow grows fond of Zote... Changing and showing all her dedications to Zote, instead of The Knight.
+
+    Location: Bretta Can be found at the Fungal Wastes, southeast of Mantis Village, past the Dash Master statue.
+    Progression: Bretta moves to her house in Dirtmouth
+    Combat: Players may not kill Bretta.
+    Rewards: Finding and speaking to her unlocks her house in Dirtmouth and a Mask Shard.
