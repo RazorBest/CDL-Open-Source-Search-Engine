@@ -12,8 +12,8 @@ The search() function:
 Return the documents of the query (Solved)
 
 The CLI (cmd module):
-    - Let the user add new directories for loading
-    - List the loaded directories
+    - Let the user add new directories for loading (Solved)
+    - List the loaded directories (Solved)
     - Check the integrity of the loaded directories
     - Read a query entered by the user and process it by showing the 
 documents (the most important part) (Solved)
