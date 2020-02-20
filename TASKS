@@ -9,7 +9,7 @@ loaded directories if the directory name wasn't given
 
 The search() function:
     - Process query string to BitArray operations;
-Return the documents of the query (Solve)
+Return the documents of the query (Solved)
 
 The CLI (cmd module):
     - Let the user add new directories for loading
