@@ -8,14 +8,27 @@ class Shell(cmd.Cmd):
     intro = "Welcome to the Open Source Search Engine. Type help or ? to list the commands.\n"
     prompt = '>>> '
     file = None
+    dirIndex = None
     wordsIndex = None
 
     def preloop(self):
-        self.wordsIndex = loader.load_words_index('example_docs')
+        # dirIndex is a list of loader.DirectoryInvertedIndex objects
+        self.dirIndex = loader.load_words_index()
 
     def do_search(self, arg):
-        files = search.search(arg, self.wordsIndex)
+        files = []
+        for directory, wordsIndex in self.dirIndex.items():
+            files.extend(search.search(arg, wordsIndex))
+
         self.print_list_of_files(files)
+
+    def do_load(self, arg):
+        wordsIndex = loader.load_words_index_from_directory(arg)
+        self.dirIndex[arg] = wordsIndex
+
+    def do_list(self, arg):
+        for directory in self.dirIndex:
+            print(directory)
 
     def do_exit(self, arg):
         print('Exitting the shell...')
