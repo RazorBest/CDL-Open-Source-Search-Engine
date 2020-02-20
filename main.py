@@ -26,6 +26,10 @@ class Shell(cmd.Cmd):
         wordsIndex = loader.load_words_index_from_directory(arg)
         self.dirIndex[arg] = wordsIndex
 
+    def do_remove(self, arg):
+        del self.dirIndex[arg]
+        print(arg + ' deleted')
+
     def do_list(self, arg):
         for directory in self.dirIndex:
             print(directory)
