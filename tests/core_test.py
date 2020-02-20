@@ -1,6 +1,11 @@
 import unittest
 from loader import load_words_index_from_directory
 from search import search
+import os
+import sys
+
+sys.path.append(os.path.dirname(__file__) + "/../")
+TEST_CASES_DIR = 'tests/test_cases/'
 
 
 class TestQueryModule(unittest.TestCase):
@@ -28,32 +33,32 @@ class TestQueryModule(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
     def test_search_1(self):
-        self.template('example_docs', 'test_cases/test1.in',
-                      'test_cases/test1.out')
+        self.template('example_docs', TEST_CASES_DIR + 'test1.in',
+                      TEST_CASES_DIR + 'test1.out')
 
     def test_search_2(self):
-        self.template('example_docs', 'test_cases/test2.in',
-                      'test_cases/test2.out')
+        self.template('example_docs', TEST_CASES_DIR + 'test2.in',
+                      TEST_CASES_DIR + 'test2.out')
 
     def test_search_3(self):
-        self.template('example_docs', 'test_cases/test3.in',
-                      'test_cases/test3.out')
+        self.template('example_docs', TEST_CASES_DIR + 'test3.in',
+                      TEST_CASES_DIR + 'test3.out')
 
     def test_search_4(self):
-        self.template('example_docs', 'test_cases/test4.in',
-                      'test_cases/test4.out')
+        self.template('example_docs', TEST_CASES_DIR + 'test4.in',
+                      TEST_CASES_DIR + 'test4.out')
 
     def test_search_5(self):
-        self.template('example_docs', 'test_cases/test5.in',
-                      'test_cases/test5.out')
+        self.template('example_docs', TEST_CASES_DIR + '/test5.in',
+                      TEST_CASES_DIR + '/test5.out')
 
     def test_search_6(self):
-        self.template('example_docs', 'test_cases/test6.in',
-                      'test_cases/test6.out')
+        self.template('example_docs', TEST_CASES_DIR + '/test6.in',
+                      TEST_CASES_DIR + '/test6.out')
 
     def test_search_7(self):
-        self.template('example_docs', 'test_cases/test7.in',
-                      'test_cases/test7.out')
+        self.template('example_docs', TEST_CASES_DIR + '/test7.in',
+                      TEST_CASES_DIR + '/test7.out')
 
 
 if __name__ == '__main__':
