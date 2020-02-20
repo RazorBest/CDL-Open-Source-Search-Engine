@@ -5,7 +5,7 @@ The load_files() function:
     - Apply the Porter Stemming Algorithm to minimize the search words
     - Save the data structures for further use (Solved)
     - Make load_words_from_index() function load from all previously
-loaded directories if the directory name wasn't given
+loaded directories if the directory name wasn't given (Solved)
 
 The search() function:
     - Process query string to BitArray operations;
