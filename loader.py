@@ -32,7 +32,7 @@ class DirectoryInvertedIndex:
         result_files = []
         for bit, filename in zip(bits, self.filenames):
             if bit:
-                result_files.append(filename)
+                result_files.append(self.directory + '/' + filename)
 
         return result_files
 
@@ -84,8 +84,7 @@ def load_files(directory):
     return wordsIndex
 
 
-def load_words_index(directory):
-    """Returns the Inverted Index from the files of a directory"""
+def load_words_index_from_directory(directory):
     path = DATA_DIRECTORY + directory
     # If the directory wasn't indexed before
     if not os.path.isfile(path):
@@ -98,6 +97,30 @@ def load_words_index(directory):
         wordsIndex = pickle.load(f)
 
         return wordsIndex
+
+
+def load_words_index(directories=[]):
+    """Returns a list of Inverted Indexes corresponding 
+        to the files of each directory from the directories list (or string)
+    If directories is empty, load all the data from DATA_DIRECTORY 
+    """
+    directoryIndex = []
+
+    # Take all the preloaded wordIndexes
+    if directories == []:
+        directories = os.listdir(DATA_DIRECTORY)
+
+    if isinstance(directories, str):
+        directories = [directories]
+
+    for directory in directories:
+        directoryIndex.append(load_words_index_from_directory(directory))
+
+    # If list has one element, convert list to that element
+    if len(directoryIndex) == 1:
+        directoryIndex = directoryIndex[0]
+
+    return directoryIndex
 
 
 if __name__ == '__main__':
