@@ -2,7 +2,7 @@ import cmd
 import sys
 import loader
 import search
-
+import os
 
 class Shell(cmd.Cmd):
     intro = "Welcome to the Open Source Search Engine. Type help or ? to list the commands.\nType search [query] to query the documents\n"
@@ -37,6 +37,7 @@ class Shell(cmd.Cmd):
             Remove a directory from the search index
         """
         del self.dirIndex[arg]
+        os.remove(loader.DATA_DIRECTORY + '/' + arg)
         print(arg + ' deleted')
 
     def do_list(self, arg):
