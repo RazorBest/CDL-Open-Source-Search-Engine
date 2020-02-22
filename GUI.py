@@ -4,12 +4,25 @@ import wx
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
         wx.StaticText.__init__(self, parent, label="Open Source Search Engine",
-                             style=wx.ALIGN_CENTRE_HORIZONTAL,
-                             size=(400, 400))
+                               style=wx.ALIGN_CENTRE_HORIZONTAL,
+                               size=(350, 70))
+
+        self.SetMinSize(wx.Size(350, 70))
 
         self.SetFont(wx.Font(30, wx.FONTFAMILY_ROMAN,
                              wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-                             
+
+
+class SearchBar(wx.SearchCtrl):
+    def __init__(self, parent):
+        wx.SearchCtrl.__init__(self, parent, size=(200,200))
+
+        self.SetMinSize(wx.Size(30, 30))
+        #self.SetMinClientSize(wx.Size(100, 100))
+        self.SetMaxSize(wx.Size(100, -1))
+        #self.SetMaxClientSize(wx.Size(100, 100))
+
+
 class MyFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
         kwargs['title'] = 'Open Source Search Engine'
@@ -23,8 +36,10 @@ class MyFrame(wx.Frame):
         self.titleWindow = TitleWindow(self)
         self.sizer.Add(self.titleWindow, 1, wx.EXPAND)
 
-        self.SetSizer(self.sizer)
-        self.SetAutoLayout(1)
+        self.searchBar = SearchBar(self)
+        self.sizer.Add(self.searchBar, 0, wx.EXPAND)
+
+        self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
         self.Show(True)
 
