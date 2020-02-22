@@ -15,12 +15,10 @@ class TitleWindow(wx.StaticText):
 
 class SearchBar(wx.SearchCtrl):
     def __init__(self, parent):
-        wx.SearchCtrl.__init__(self, parent, size=(200,200))
+        wx.SearchCtrl.__init__(self, parent, size=(200, 200))
 
         self.SetMinSize(wx.Size(30, 30))
-        #self.SetMinClientSize(wx.Size(100, 100))
         self.SetMaxSize(wx.Size(100, -1))
-        #self.SetMaxClientSize(wx.Size(100, 100))
 
 
 class MyFrame(wx.Frame):
