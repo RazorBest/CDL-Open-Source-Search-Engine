@@ -23,11 +23,23 @@ class TitleWindow(wx.StaticText):
 
 
 class SearchBar(wx.SearchCtrl):
-    def __init__(self, parent):
-        wx.SearchCtrl.__init__(self, parent, size=(200, 200))
+    def __init__(self, parent, **kwargs):
+        kwargs['size'] = (200, 200)
+        wx.SearchCtrl.__init__(self, parent, **kwargs)
 
         self.SetMinSize(wx.Size(30, 30))
         self.SetMaxSize(wx.Size(100, -1))
+
+        self.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
+
+    def OnEnter(self, e):
+        # create the event
+        evt = wx.PyCommandEvent(wx.EVT_SEARCHCTRL_SEARCH_BTN.typeId, self.GetId())
+        evt.SetString(self.GetValue())
+        # post the event
+        wx.PostEvent(self, evt)
+
+    
 
 
 class FileList(wx.ListBox):
@@ -172,7 +184,7 @@ class MyFrame(wx.Frame):
         self.titleWindow = TitleWindow(self)
         self.sizer.Add(self.titleWindow, 1, wx.EXPAND)
 
-        self.searchBar = SearchBar(self)
+        self.searchBar = SearchBar(self, style=wx.TE_PROCESS_ENTER)
         self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
         self.sizer.AddSpacer(10)
 
@@ -182,6 +194,7 @@ class MyFrame(wx.Frame):
 
         self.Bind(EVT_LOAD_DIRECTORY_COMMAND_EVENT, self.OnLoadDir)
         self.Bind(EVT_REMOVE_DIRECTORY_COMMAND_EVENT, self.OnRemoveDir)
+        self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnSearch)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
@@ -208,6 +221,9 @@ class MyFrame(wx.Frame):
         del self.dirIndex[dir_id]
         os.remove(loader.DATA_DIRECTORY + dir_id)
 
+    def OnSearch(self, e):
+        query = e.GetString()
+        print(query)
 
 if __name__ == '__main__':
     dirIndex = loader.load_words_index()
