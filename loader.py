@@ -118,7 +118,8 @@ def load_words_index(directories=[]):
     if directories != []:
         for directoryPath in directories:
             dir_id = get_path_id(directoryPath)
-            directoryIndex[dir_id] = load_words_index_from_directory(directoryPath)
+            directoryIndex[dir_id] = load_words_index_from_directory(
+                directoryPath)
 
         return directoryIndex
 
