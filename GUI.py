@@ -48,6 +48,15 @@ class FileList(wx.ListBox):
         kwargs['style'] = wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
 
+        self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnDoubleClick)
+
+    def OnDoubleClick(self, e):
+        selection = self.GetSelection()
+        assert(selection != wx.NOT_FOUND), "Nothing is selected"
+
+        path = self.GetString(selection)
+        os.system('xdg-open ' + path)
+
     def AddFileEntry(self, filename):
         self.Append(filename)
 
