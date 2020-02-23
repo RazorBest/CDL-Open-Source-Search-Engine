@@ -21,7 +21,7 @@ class Shell(cmd.Cmd):
         """
         # TODO validate the query
         files = []
-        for directory, wordsIndex in self.dirIndex.items():
+        for wordsIndex in self.dirIndex.values():
             files.extend(search.search(arg, wordsIndex))
 
         self.print_list_of_files(files)
