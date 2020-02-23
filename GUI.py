@@ -1,7 +1,13 @@
 import wx
 import wx.adv
+import wx.lib.newevent
+import os
+
 import loader
 import search
+
+
+LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
@@ -28,7 +34,6 @@ class FileList(wx.ListBox):
         kwargs['size'] = (100, 200)
         kwargs['style'] = wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
-
 
     def AddFileEntry(self, filename):
         self.Append(filename)
@@ -78,7 +83,7 @@ class EditPanel(wx.Panel):
 
 
 class DirectoryChooser(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, dirIndex):
         wx.Panel.__init__(self, parent, size=(300, 300))
 
         self.SetBackgroundColour(wx.WHITE)
@@ -86,7 +91,7 @@ class DirectoryChooser(wx.Panel):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fileList = FileList(
-            self, choices=[])  # , style=wx.BORDER_NONE)
+            self, choices=list(dirIndex.keys()))  # , style=wx.BORDER_NONE)
         self.sizer.Add(self.fileList, 1, flag=wx.EXPAND)
 
         self.editPanel = EditPanel(self)
@@ -101,7 +106,17 @@ class DirectoryChooser(wx.Panel):
     def OnAdd(self, e):
         dialog = wx.DirDialog(self, "Choose a directory")
 
-        if dialog.ShowModal() == wx.ID_OK:
+        if dialog.ShowModal() != wx.ID_OK:
+            return
+
+        path = dialog.GetPath()
+
+        if not path in self.fileList.GetSelections():
+            #create the event
+            evt = LoadDirectoryCommandEvent(-1, directory=dialog.GetPath())
+            #post the event
+            wx.PostEvent(self, evt)
+
             self.fileList.AddFileEntry(dialog.GetPath())
 
     def OnRemove(self, e):
@@ -109,13 +124,13 @@ class DirectoryChooser(wx.Panel):
 
 
 class FileManager(wx.Window):
-    def __init__(self, parent):
+    def __init__(self, parent, dirIndex):
         wx.Window.__init__(self, parent)
 
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.sizer.AddSpacer(20)
-        self.sizer.Add(DirectoryChooser(self))
+        self.sizer.Add(DirectoryChooser(self, dirIndex))
         self.sizer.AddSpacer(20)
         self.sizer.Add(FileList(self, choices=['ana', 'are', 'mere']))
 
@@ -127,7 +142,8 @@ class MyFrame(wx.Frame):
     def __init__(self, parent, dirIndex):
         self.dirIndex = dirIndex
 
-        wx.Frame.__init__(self, parent, title='Open Source Search Engine', size=(300, 200))
+        wx.Frame.__init__(
+            self, parent, title='Open Source Search Engine', size=(300, 200))
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -140,19 +156,34 @@ class MyFrame(wx.Frame):
         self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
         self.sizer.AddSpacer(10)
 
-        self.fileManager = FileManager(self)
+        self.fileManager = FileManager(self, self.dirIndex)
         self.sizer.Add(self.fileManager)
         self.sizer.AddSpacer(20)
+
+        self.Bind(EVT_LOAD_DIRECTORY_COMMAND_EVENT, self.OnLoadDir)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
         self.Centre()
         self.Show(True)
 
+    def OnLoadDir(self, e):
+        directory = e.directory
+
+        assert (os.path.isdir(directory)
+                ), 'argument is not a directory or does not exist'
+
+        directory = directory.split('/')
+        directory = directory[-1]
+
+        wordsIndex = loader.load_words_index_from_directory(directory)
+        self.dirIndex[directory] = wordsIndex
+        print(wordsIndex)
+
 
 if __name__ == '__main__':
     dirIndex = loader.load_words_index()
-    
+
     app = wx.App(False)
     frame = MyFrame(None, dirIndex=dirIndex)
 
