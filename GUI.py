@@ -9,6 +9,7 @@ import search
 
 LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 
+
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
         wx.StaticText.__init__(self, parent, label="Open Source Search Engine",
@@ -90,8 +91,8 @@ class DirectoryChooser(wx.Panel):
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.fileList = FileList(
-            self, choices=list(dirIndex.keys()))  # , style=wx.BORDER_NONE)
+        dirnames = [wIndex.directoryPath for wIndex in dirIndex.values()]
+        self.fileList = FileList(self, choices=dirnames)  # , style=wx.BORDER_NONE)
         self.sizer.Add(self.fileList, 1, flag=wx.EXPAND)
 
         self.editPanel = EditPanel(self)
@@ -111,13 +112,16 @@ class DirectoryChooser(wx.Panel):
 
         path = dialog.GetPath()
 
-        if not path in self.fileList.GetSelections():
-            #create the event
-            evt = LoadDirectoryCommandEvent(-1, directory=dialog.GetPath())
-            #post the event
-            wx.PostEvent(self, evt)
+        # create the event
+        evt = LoadDirectoryCommandEvent(-1, directory=dialog.GetPath())
+        # post the event
+        wx.PostEvent(self, evt)
 
-            self.fileList.AddFileEntry(dialog.GetPath())
+        # If the directory was already addede to the fileList, don't do anything
+        if path in self.fileList.GetItems():
+            return
+
+        self.fileList.AddFileEntry(dialog.GetPath())
 
     def OnRemove(self, e):
         self.fileList.DeleteSelection()
@@ -173,11 +177,10 @@ class MyFrame(wx.Frame):
         assert (os.path.isdir(directory)
                 ), 'argument is not a directory or does not exist'
 
-        directory = directory.split('/')
-        directory = directory[-1]
+        dir_id = loader.get_path_id(directory)
 
         wordsIndex = loader.load_words_index_from_directory(directory)
-        self.dirIndex[directory] = wordsIndex
+        self.dirIndex[dir_id] = wordsIndex
         print(wordsIndex)
 
 
