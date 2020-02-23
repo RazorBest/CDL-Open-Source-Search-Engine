@@ -1,6 +1,7 @@
 import wx
 import wx.adv
-
+import loader
+import search
 
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
@@ -86,7 +87,7 @@ class DirectoryChooser(wx.Panel):
 
         self.fileList = FileList(
             self, choices=[])  # , style=wx.BORDER_NONE)
-        self.sizer.Add(self.fileList, flag=wx.EXPAND)
+        self.sizer.Add(self.fileList, 1, flag=wx.EXPAND)
 
         self.editPanel = EditPanel(self)
         self.sizer.Add(self.editPanel)
@@ -123,10 +124,10 @@ class FileManager(wx.Window):
 
 
 class MyFrame(wx.Frame):
-    def __init__(self, *args, **kwargs):
-        kwargs['title'] = 'Open Source Search Engine'
-        kwargs['size'] = (300, 200)
-        wx.Frame.__init__(self, *args, **kwargs)
+    def __init__(self, parent, dirIndex):
+        self.dirIndex = dirIndex
+
+        wx.Frame.__init__(self, parent, title='Open Source Search Engine', size=(300, 200))
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -150,7 +151,9 @@ class MyFrame(wx.Frame):
 
 
 if __name__ == '__main__':
+    dirIndex = loader.load_words_index()
+    
     app = wx.App(False)
-    frame = MyFrame(None,  wx.ID_ANY)
+    frame = MyFrame(None, dirIndex=dirIndex)
 
     app.MainLoop()
