@@ -172,10 +172,11 @@ class FileManager(wx.Window):
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.sizer.AddSpacer(20)
-        self.sizer.Add(DirectoryChooser(self, dirIndex))
-        self.sizer.AddSpacer(20)
         self.fileList = FileList(self, choices=['ana', 'are', 'mere'])
         self.sizer.Add(self.fileList)
+
+        self.sizer.AddSpacer(20)
+        self.sizer.Add(DirectoryChooser(self, dirIndex))
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
