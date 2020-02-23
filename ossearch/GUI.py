@@ -3,8 +3,8 @@ import wx.adv
 import wx.lib.newevent
 import os
 
-import loader
-import search
+from . import loader
+from . import search
 
 
 LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()

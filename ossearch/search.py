@@ -1,6 +1,6 @@
 from bitstring import BitArray
-from loader import load_words_index_from_directory
-from loader import STOPWORDS
+from .loader import load_words_index_from_directory
+from .loader import STOPWORDS
 import re
 import collections
 import itertools

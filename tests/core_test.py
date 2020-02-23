@@ -1,12 +1,12 @@
-import unittest
-from loader import load_words_index_from_directory
-from search import search
 import os
+import unittest
 import sys
-
 sys.path.append(os.path.dirname(__file__) + "/../")
-TEST_CASES_DIR = 'tests/test_cases/'
+from ossearch import *
+from ossearch.loader import load_words_index_from_directory
+from ossearch.search import search
 
+TEST_CASES_DIR = 'tests/test_cases/'
 
 class TestQueryModule(unittest.TestCase):
 
