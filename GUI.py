@@ -15,9 +15,9 @@ class TitleWindow(wx.StaticText):
     def __init__(self, parent):
         wx.StaticText.__init__(self, parent, label="Open Source Search Engine",
                                style=wx.ALIGN_CENTRE_HORIZONTAL,
-                               size=(350, 100))
+                               size=(330, 100))
 
-        self.SetMinSize(wx.Size(350, 100))
+        self.SetMinSize(wx.Size(330, 100))
 
         self.SetFont(wx.Font(30, wx.FONTFAMILY_ROMAN,
                              wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
@@ -29,7 +29,7 @@ class SearchBar(wx.SearchCtrl):
         wx.SearchCtrl.__init__(self, parent, **kwargs)
 
         self.SetMinSize(wx.Size(300, 30))
-        self.SetMaxSize(wx.Size(400, -1))
+        self.SetMaxSize(wx.Size(800, -1))
 
         self.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
 
@@ -44,7 +44,7 @@ class SearchBar(wx.SearchCtrl):
 
 class FileList(wx.ListBox):
     def __init__(self, parent, **kwargs):
-        kwargs['size'] = (100, 100)
+        kwargs['size'] = (170, 100)
         kwargs['style'] = wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
 
@@ -171,7 +171,6 @@ class FileManager(wx.Window):
 
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.sizer.AddSpacer(20)
         self.fileList = FileList(self, choices=[])
         self.sizer.Add(self.fileList, 1, wx.EXPAND)
 
@@ -184,6 +183,22 @@ class FileManager(wx.Window):
     def UpdateResults(self, choices):
         self.fileList.Set(choices)
 
+class HeaderWindow(wx.Window):
+    def __init__(self, *args, **kwargs):
+        wx.Window.__init__(self, *args, **kwargs)
+
+        self.SetFont(wx.Font(wx.FontInfo(11).Bold()))
+
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.text1 = wx.StaticText(self, label="Search Results:")
+        self.sizer.Add(self.text1, 1, wx.EXPAND)
+
+        self.text2 = wx.StaticText(self, size=(300, 20), label="Directory Index:")
+        self.sizer.Add(self.text2, 0, wx.EXPAND)
+
+        self.SetSizerAndFit(self.sizer)
+        self.sizer.Fit(self)
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, dirIndex):
@@ -193,16 +208,25 @@ class MyFrame(wx.Frame):
             self, parent, title='Open Source Search Engine', size=(300, 200))
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.spacingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
+        # Add the title
         self.sizer.AddSpacer(20)
-
         self.titleWindow = TitleWindow(self)
         self.sizer.Add(self.titleWindow, 0, wx.EXPAND)
 
+        # Add the search bar
+        self.sizer.AddSpacer(10)
         self.searchBar = SearchBar(self, style=wx.TE_PROCESS_ENTER)
         self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
-        self.sizer.AddSpacer(10)
+        
+        # Add the headers
+        self.sizer.AddSpacer(18)
+        self.headerWindow = HeaderWindow(self)
+        self.sizer.Add(self.headerWindow, 0, wx.EXPAND)
 
+        # Add the space in which are shown the search results and the directory index
+        self.sizer.AddSpacer(4)
         self.fileManager = FileManager(self, self.dirIndex)
         self.sizer.Add(self.fileManager, 1, wx.EXPAND)
         self.sizer.AddSpacer(20)
@@ -211,7 +235,11 @@ class MyFrame(wx.Frame):
         self.Bind(EVT_REMOVE_DIRECTORY_COMMAND_EVENT, self.OnRemoveDir)
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.OnSearch)
 
-        self.SetSizerAndFit(self.sizer)
+        self.spacingSizer.AddSpacer(20)
+        self.spacingSizer.Add(self.sizer, 1, wx.EXPAND)
+        self.spacingSizer.AddSpacer(20)
+
+        self.SetSizerAndFit(self.spacingSizer)
         self.sizer.Fit(self)
         self.Centre()
         self.Show(True)
@@ -226,7 +254,6 @@ class MyFrame(wx.Frame):
 
         wordsIndex = loader.load_words_index_from_directory(directory)
         self.dirIndex[dir_id] = wordsIndex
-        print(wordsIndex)
 
     def OnRemoveDir(self, e):
         directory = e.directory
@@ -243,7 +270,6 @@ class MyFrame(wx.Frame):
         for wordsIndex in self.dirIndex.values():
             files.extend(search.search(query, wordsIndex))
         
-        print(files)
         self.fileManager.UpdateResults(files)
 
 if __name__ == '__main__':
