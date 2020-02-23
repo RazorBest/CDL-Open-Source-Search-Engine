@@ -28,8 +28,8 @@ class SearchBar(wx.SearchCtrl):
         kwargs['size'] = (200, 200)
         wx.SearchCtrl.__init__(self, parent, **kwargs)
 
-        self.SetMinSize(wx.Size(30, 30))
-        self.SetMaxSize(wx.Size(100, -1))
+        self.SetMinSize(wx.Size(300, 30))
+        self.SetMaxSize(wx.Size(400, -1))
 
         self.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
 
@@ -165,10 +165,14 @@ class FileManager(wx.Window):
         self.sizer.AddSpacer(20)
         self.sizer.Add(DirectoryChooser(self, dirIndex))
         self.sizer.AddSpacer(20)
-        self.sizer.Add(FileList(self, choices=['ana', 'are', 'mere']))
+        self.fileList = FileList(self, choices=['ana', 'are', 'mere'])
+        self.sizer.Add(self.fileList)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
+
+    def UpdateResults(self, choices):
+        self.fileList.Set(choices)
 
 
 class MyFrame(wx.Frame):
@@ -224,8 +228,13 @@ class MyFrame(wx.Frame):
 
     def OnSearch(self, e):
         query = e.GetString()
-        print(query)
-
+        
+        files = []
+        for wordsIndex in self.dirIndex.values():
+            files.extend(search.search(query, wordsIndex))
+        
+        print(files)
+        self.fileManager.UpdateResults(files)
 
 if __name__ == '__main__':
     dirIndex = loader.load_words_index()
