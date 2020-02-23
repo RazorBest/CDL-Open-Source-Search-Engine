@@ -1,7 +1,7 @@
 import cmd
 import sys
-import loader
-import search
+import .loader
+import .search
 import os
 
 class Shell(cmd.Cmd):
