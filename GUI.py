@@ -117,7 +117,7 @@ class DirectoryChooser(wx.Panel):
         # post the event
         wx.PostEvent(self, evt)
 
-        # If the directory was already addede to the fileList, don't do anything
+        # If the directory was already added to the fileList, don't do anything
         if path in self.fileList.GetItems():
             return
 
