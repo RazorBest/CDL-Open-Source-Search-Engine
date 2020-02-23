@@ -44,7 +44,7 @@ class SearchBar(wx.SearchCtrl):
 
 class FileList(wx.ListBox):
     def __init__(self, parent, **kwargs):
-        kwargs['size'] = (100, 200)
+        kwargs['size'] = (100, 100)
         kwargs['style'] = wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
 
@@ -113,7 +113,7 @@ class EditPanel(wx.Panel):
 
 class DirectoryChooser(wx.Panel):
     def __init__(self, parent, dirIndex):
-        wx.Panel.__init__(self, parent, size=(300, 300))
+        wx.Panel.__init__(self, parent, size=(300, 200))
 
         self.SetBackgroundColour(wx.WHITE)
 
@@ -172,8 +172,8 @@ class FileManager(wx.Window):
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.sizer.AddSpacer(20)
-        self.fileList = FileList(self, choices=['ana', 'are', 'mere'])
-        self.sizer.Add(self.fileList)
+        self.fileList = FileList(self, choices=[])
+        self.sizer.Add(self.fileList, 1, wx.EXPAND)
 
         self.sizer.AddSpacer(20)
         self.sizer.Add(DirectoryChooser(self, dirIndex))
@@ -197,14 +197,14 @@ class MyFrame(wx.Frame):
         self.sizer.AddSpacer(20)
 
         self.titleWindow = TitleWindow(self)
-        self.sizer.Add(self.titleWindow, 1, wx.EXPAND)
+        self.sizer.Add(self.titleWindow, 0, wx.EXPAND)
 
         self.searchBar = SearchBar(self, style=wx.TE_PROCESS_ENTER)
         self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
         self.sizer.AddSpacer(10)
 
         self.fileManager = FileManager(self, self.dirIndex)
-        self.sizer.Add(self.fileManager)
+        self.sizer.Add(self.fileManager, 1, wx.EXPAND)
         self.sizer.AddSpacer(20)
 
         self.Bind(EVT_LOAD_DIRECTORY_COMMAND_EVENT, self.OnLoadDir)
