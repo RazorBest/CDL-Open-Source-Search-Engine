@@ -10,6 +10,7 @@ import search
 LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 RemoveDirectoryCommandEvent, EVT_REMOVE_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 
+
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
         wx.StaticText.__init__(self, parent, label="Open Source Search Engine",
@@ -34,12 +35,11 @@ class SearchBar(wx.SearchCtrl):
 
     def OnEnter(self, e):
         # create the event
-        evt = wx.PyCommandEvent(wx.EVT_SEARCHCTRL_SEARCH_BTN.typeId, self.GetId())
+        evt = wx.PyCommandEvent(
+            wx.EVT_SEARCHCTRL_SEARCH_BTN.typeId, self.GetId())
         evt.SetString(self.GetValue())
         # post the event
         wx.PostEvent(self, evt)
-
-    
 
 
 class FileList(wx.ListBox):
@@ -111,7 +111,8 @@ class DirectoryChooser(wx.Panel):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
         dirnames = [wIndex.directoryPath for wIndex in dirIndex.values()]
-        self.fileList = FileList(self, choices=dirnames)  # , style=wx.BORDER_NONE)
+        # , style=wx.BORDER_NONE)
+        self.fileList = FileList(self, choices=dirnames)
         self.sizer.Add(self.fileList, 1, flag=wx.EXPAND)
 
         self.editPanel = EditPanel(self)
@@ -212,7 +213,7 @@ class MyFrame(wx.Frame):
         wordsIndex = loader.load_words_index_from_directory(directory)
         self.dirIndex[dir_id] = wordsIndex
         print(wordsIndex)
-    
+
     def OnRemoveDir(self, e):
         directory = e.directory
         dir_id = loader.get_path_id(directory)
@@ -224,6 +225,7 @@ class MyFrame(wx.Frame):
     def OnSearch(self, e):
         query = e.GetString()
         print(query)
+
 
 if __name__ == '__main__':
     dirIndex = loader.load_words_index()
