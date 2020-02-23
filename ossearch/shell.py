@@ -76,6 +76,8 @@ class Shell(cmd.Cmd):
         for file in files:
             print('    ' + file)
 
+def main():
+    Shell().cmdloop()
 
 if __name__ == '__main__':
-    Shell().cmdloop()
+    main()
