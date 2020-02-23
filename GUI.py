@@ -1,13 +1,14 @@
 import wx
+import wx.adv
 
 
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
         wx.StaticText.__init__(self, parent, label="Open Source Search Engine",
                                style=wx.ALIGN_CENTRE_HORIZONTAL,
-                               size=(350, 70))
+                               size=(350, 100))
 
-        self.SetMinSize(wx.Size(350, 70))
+        self.SetMinSize(wx.Size(350, 100))
 
         self.SetFont(wx.Font(30, wx.FONTFAMILY_ROMAN,
                              wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
@@ -19,6 +20,106 @@ class SearchBar(wx.SearchCtrl):
 
         self.SetMinSize(wx.Size(30, 30))
         self.SetMaxSize(wx.Size(100, -1))
+
+
+class FileList(wx.ListBox):
+    def __init__(self, parent, **kwargs):
+        kwargs['size'] = (100, 200)
+        kwargs['style'] = wx.ALIGN_RIGHT
+        wx.ListBox.__init__(self, parent, **kwargs)
+
+
+    def AddFileEntry(self, filename):
+        self.Append(filename)
+
+    def DeleteSelection(self):
+        selection = self.GetSelection()
+        if selection != wx.NOT_FOUND:
+            self.Delete(selection)
+
+        return selection
+
+
+class RemoveButton(wx.Button):
+    def __init__(self, parent):
+        wx.Button.__init__(self, parent, label='x')
+
+        self.Fit()
+        self.SetMinSize(wx.Size(30, 30))
+
+
+class FileEntry(wx.Window):
+    def __init__(self, parent, label=""):
+        wx.Window.__init__(self, parent)
+
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizer.Add(wx.StaticText(self, label=label), 0, wx.ALIGN_LEFT)
+        self.sizer.AddStretchSpacer(1)
+        self.sizer.Add(RemoveButton(self), 0, wx.ALIGN_RIGHT)
+
+        self.SetSizer(self.sizer)
+
+
+class EditPanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.addButton = wx.Button(self, label='Add')
+        self.sizer.Add(self.addButton)
+
+        self.removeButton = wx.Button(self, label='Remove')
+        self.sizer.Add(self.removeButton)
+
+        self.SetSizer(self.sizer)
+        self.sizer.Fit(self)
+
+
+class DirectoryChooser(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, size=(300, 300))
+
+        self.SetBackgroundColour(wx.WHITE)
+
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.fileList = FileList(
+            self, choices=[])  # , style=wx.BORDER_NONE)
+        self.sizer.Add(self.fileList, flag=wx.EXPAND)
+
+        self.editPanel = EditPanel(self)
+        self.sizer.Add(self.editPanel)
+
+        self.editPanel.addButton.Bind(wx.EVT_BUTTON, self.OnAdd)
+        self.editPanel.removeButton.Bind(wx.EVT_BUTTON, self.OnRemove)
+
+        self.SetSizer(self.sizer)
+        self.sizer.Fit(self)
+
+    def OnAdd(self, e):
+        dialog = wx.DirDialog(self, "Choose a directory")
+
+        if dialog.ShowModal() == wx.ID_OK:
+            self.fileList.AddFileEntry(dialog.GetPath())
+
+    def OnRemove(self, e):
+        self.fileList.DeleteSelection()
+
+
+class FileManager(wx.Window):
+    def __init__(self, parent):
+        wx.Window.__init__(self, parent)
+
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.sizer.AddSpacer(20)
+        self.sizer.Add(DirectoryChooser(self))
+        self.sizer.AddSpacer(20)
+        self.sizer.Add(FileList(self, choices=['ana', 'are', 'mere']))
+
+        self.SetSizerAndFit(self.sizer)
+        self.sizer.Fit(self)
 
 
 class MyFrame(wx.Frame):
@@ -35,10 +136,16 @@ class MyFrame(wx.Frame):
         self.sizer.Add(self.titleWindow, 1, wx.EXPAND)
 
         self.searchBar = SearchBar(self)
-        self.sizer.Add(self.searchBar, 0, wx.EXPAND)
+        self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
+        self.sizer.AddSpacer(10)
+
+        self.fileManager = FileManager(self)
+        self.sizer.Add(self.fileManager)
+        self.sizer.AddSpacer(20)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
+        self.Centre()
         self.Show(True)
 
 
