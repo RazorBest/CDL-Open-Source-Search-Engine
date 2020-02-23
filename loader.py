@@ -2,6 +2,7 @@ import os
 import re
 from bitstring import BitArray
 import pickle
+import hashlib
 
 DATA_DIRECTORY = '.data/'
 # Words that are too common and are ignored
@@ -10,9 +11,9 @@ STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
 
 
 class DirectoryInvertedIndex:
-    def __init__(self, directory, filenames):
+    def __init__(self, directoryPath, filenames):
         self.wordsIndex = {}
-        self.directory = directory
+        self.directoryPath = directoryPath
         self.filenames = tuple(filenames)
         self.files_count = len(filenames)
 
@@ -32,13 +33,17 @@ class DirectoryInvertedIndex:
         result_files = []
         for bit, filename in zip(bits, self.filenames):
             if bit:
-                result_files.append(self.directory + '/' + filename)
+                result_files.append(self.directoryPath + '/' + filename)
 
         return result_files
 
 
-def save_data(data, dirname):
-    path = DATA_DIRECTORY + dirname
+def get_path_id(path):
+    return hashlib.sha512(path.encode('utf-8')).hexdigest()
+
+
+def save_data(data, filename):
+    path = DATA_DIRECTORY + filename
     if not os.path.isdir(DATA_DIRECTORY):
         os.mkdir(DATA_DIRECTORY)
     with open(path, 'wb') as f:
@@ -84,19 +89,19 @@ def load_files(directory):
     return wordsIndex
 
 
-def load_words_index_from_directory(directory):
-    path = DATA_DIRECTORY + directory
-    # If the directory wasn't indexed before
-    if not os.path.isfile(path):
-        wordsIndex = load_files(directory)
-        save_data(wordsIndex, directory)
-
-        return wordsIndex
-
-    with open(path, 'rb') as f:
+def load_words_index_from_id(dir_id):
+    dataPath = DATA_DIRECTORY + dir_id
+    with open(dataPath, 'rb') as f:
         wordsIndex = pickle.load(f)
 
         return wordsIndex
+
+
+def load_words_index_from_directory(directoryPath):
+    wordsIndex = load_files(directoryPath)
+    save_data(wordsIndex, get_path_id(directoryPath))
+
+    return wordsIndex
 
 
 def load_words_index(directories=[]):
@@ -106,15 +111,22 @@ def load_words_index(directories=[]):
     """
     directoryIndex = {}
 
-    # Take all the preloaded wordIndexes
-    if directories == []:
-        directories = os.listdir(DATA_DIRECTORY)
-
     if isinstance(directories, str):
         directories = [directories]
 
-    for directory in directories:
-        directoryIndex[directory] = load_words_index_from_directory(directory)
+    # Load the given directories
+    if directories != []:
+        for directoryPath in directories:
+            dir_id = get_path_id(directoryPath)
+            directoryIndex[dir_id] = load_words_index_from_directory(directoryPath)
+
+        return directoryIndex
+
+    # Load the indexes from teh preloaded wordIndexes from DATA_DIRECTORY
+    ids = os.listdir(DATA_DIRECTORY)
+
+    for dir_id in ids:
+        directoryIndex[dir_id] = load_words_index_from_id(dir_id)
 
     return directoryIndex
 

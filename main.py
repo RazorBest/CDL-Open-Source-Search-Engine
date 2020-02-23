@@ -4,7 +4,6 @@ import loader
 import search
 import os
 
-
 class Shell(cmd.Cmd):
     intro = "Welcome to the Open Source Search Engine. Type help or ? to list the commands.\nType search [query] to query the documents\n"
     prompt = '>>> '
@@ -35,26 +34,28 @@ class Shell(cmd.Cmd):
             print('"' + arg + '" is not a directory os does not exist')
             return
 
+        dir_id = loader.get_path_id(arg)
         wordsIndex = loader.load_words_index_from_directory(arg)
-        self.dirIndex[arg] = wordsIndex
+        self.dirIndex[dir_id] = wordsIndex
 
     def do_remove(self, arg):
         """remove [directory]
             Remove a directory from the search index
         """
-        if not arg in self.dirIndex:
+        dir_id = loader.get_path_id(arg)
+        if not dir_id in self.dirIndex:
             print('"' + arg + '" is not a loaded directory. Type list to see loaded directories')
             return
 
-        del self.dirIndex[arg]
-        os.remove(loader.DATA_DIRECTORY + '/' + arg)
+        del self.dirIndex[dir_id]
+        os.remove(loader.DATA_DIRECTORY + dir_id)
         print(arg + ' deleted')
 
     def do_list(self, arg):
         """List the loaded directories from the search index
         """
-        for directory in self.dirIndex:
-            print(directory)
+        for wordsIndex in self.dirIndex.values():
+            print(wordsIndex.directoryPath)
 
     def do_exit(self, arg):
         """Exit the shell
