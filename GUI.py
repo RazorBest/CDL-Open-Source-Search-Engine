@@ -8,7 +8,7 @@ import search
 
 
 LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
-
+RemoveDirectoryCommandEvent, EVT_REMOVE_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 
 class TitleWindow(wx.StaticText):
     def __init__(self, parent):
@@ -38,6 +38,13 @@ class FileList(wx.ListBox):
 
     def AddFileEntry(self, filename):
         self.Append(filename)
+
+    def GetSelectedString(self):
+        selection = self.GetSelection()
+        if selection == wx.NOT_FOUND:
+            return None
+
+        return self.GetString(selection)
 
     def DeleteSelection(self):
         selection = self.GetSelection()
@@ -124,7 +131,16 @@ class DirectoryChooser(wx.Panel):
         self.fileList.AddFileEntry(dialog.GetPath())
 
     def OnRemove(self, e):
+        directory = self.fileList.GetSelectedString()
         self.fileList.DeleteSelection()
+
+        if directory == None:
+            return
+
+        # create the event
+        evt = RemoveDirectoryCommandEvent(-1, directory=directory)
+        # post the event
+        wx.PostEvent(self, evt)
 
 
 class FileManager(wx.Window):
@@ -165,6 +181,7 @@ class MyFrame(wx.Frame):
         self.sizer.AddSpacer(20)
 
         self.Bind(EVT_LOAD_DIRECTORY_COMMAND_EVENT, self.OnLoadDir)
+        self.Bind(EVT_REMOVE_DIRECTORY_COMMAND_EVENT, self.OnRemoveDir)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
@@ -182,6 +199,14 @@ class MyFrame(wx.Frame):
         wordsIndex = loader.load_words_index_from_directory(directory)
         self.dirIndex[dir_id] = wordsIndex
         print(wordsIndex)
+    
+    def OnRemoveDir(self, e):
+        directory = e.directory
+        dir_id = loader.get_path_id(directory)
+        assert(dir_id in self.dirIndex), 'dir_id is not in self.dirIndex'
+
+        del self.dirIndex[dir_id]
+        os.remove(loader.DATA_DIRECTORY + dir_id)
 
 
 if __name__ == '__main__':
