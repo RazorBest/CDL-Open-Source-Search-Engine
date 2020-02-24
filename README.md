@@ -50,7 +50,7 @@ $ pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubu
 ```
 Or find the correpsonding wheel for your OS.
   
-## How to use
+## How to use ossearch
 To start the GUI, type "ossearch" in the terminal
 ```
 $ ossearch
