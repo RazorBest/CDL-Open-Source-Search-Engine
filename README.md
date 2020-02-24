@@ -28,7 +28,14 @@ $ sudo ./install.sh
 ```
 
 #### Manual installation
-If the script fails, you'll need to install the package manually with:
+If the script fails, you'll need to install the package manually.
+If you don't have pip3 install it like this:
+```
+$ sudo apt update
+$ sudo apt install python3-pip
+```
+
+To install the package, use:
 ```
 $ sudo -H pip3 install .
 ```
