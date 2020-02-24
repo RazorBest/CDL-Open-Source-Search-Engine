@@ -20,6 +20,7 @@ def token_split(query):
 
     tokens = []
     for token in query:
+        # Split by '(', ')', '||', '&&', '!'
         token = re.split(DELIMITERS, token)
         # Remove empty strings from list
         token = list(filter(None, token))
@@ -68,11 +69,12 @@ def apply_operator(result, currentBits, negate, state):
 
 def evaluate_expr(expr, wordsIndex):
     """Evaluate the expression using the logical 
-        operations from BitArray
+        operations from BitArray.
+        The expression must've been split in tokens.
     """
+    # Init variables
     result = BitArray(wordsIndex.files_count)
     initialised = False
-
     currentBits = BitArray(wordsIndex.files_count)
     negate = False
     state = ''
@@ -88,8 +90,10 @@ def evaluate_expr(expr, wordsIndex):
 
         if token == '(':
             closing_index = i + find_closing_paranthesis(expr[i:])
+            # Evaluate the expression between the parantheses
             currentBits = evaluate_expr(
                 expr[i + 1:closing_index], wordsIndex).copy()
+            # Jump with the iterator after the closing parantheses
             consume(iterator, closing_index - i)
 
         if is_word(token):
@@ -100,6 +104,7 @@ def evaluate_expr(expr, wordsIndex):
                 negate = False
                 currentBits = result.copy()
             else:
+                # No match for the current word; Make all the bits 0
                 currentBits = BitArray(wordsIndex.files_count)
 
         result = apply_operator(result, currentBits, negate, state)
@@ -110,9 +115,10 @@ def evaluate_expr(expr, wordsIndex):
 
 
 def solve_query(query, wordsIndex):
-    """Return a list of files that match the query"""
+    """Return a BitArray that represents the files that match the query"""
 
     query = query.lower()
+    # Break the query into a list of strings/tokens
     tokens = token_split(query)
     result = evaluate_expr(tokens, wordsIndex)
 
@@ -120,8 +126,11 @@ def solve_query(query, wordsIndex):
 
 
 def search(query, wordsIndex):
+    """Call this function to perform a search in a directory indexed by wordsIndex"""
+    # Get the BitArray that indicates the files that apply to the query
     bitsResult = solve_query(query, wordsIndex)
 
+    # Get a list of the name of the files
     files = wordsIndex.get_files(bitsResult)
 
     return files
