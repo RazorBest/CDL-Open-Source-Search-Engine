@@ -25,6 +25,8 @@ You can install the package with
 ```
 $ sudo ./install.sh
 ```
+
+#### Manual installation
 If the script fails, you'll need to install the package manually.
 
 
