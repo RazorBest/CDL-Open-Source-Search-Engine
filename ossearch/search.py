@@ -61,7 +61,7 @@ def apply_operator(result, currentBits, negate, state):
     elif state == '||':
         result |= currentBits
     else:
-        result = currentBits
+        result = currentBits.copy()
 
     return result
 
@@ -77,6 +77,9 @@ def evaluate_expr(expr, wordsIndex):
     negate = False
     state = ''
 
+    print(wordsIndex['linux'].bin)
+    print(wordsIndex['programming'].bin)
+
     iterator = enumerate(expr)
     for i, token in iterator:
         if token == '!':
@@ -88,16 +91,16 @@ def evaluate_expr(expr, wordsIndex):
 
         if token == '(':
             closing_index = i + find_closing_paranthesis(expr[i:])
-            currentBits = evaluate_expr(expr[i + 1:closing_index], wordsIndex)
+            currentBits = evaluate_expr(expr[i + 1:closing_index], wordsIndex).copy()
             consume(iterator, closing_index - i)
 
         if is_word(token):
             if token in wordsIndex:
-                currentBits = wordsIndex[token]
+                currentBits = wordsIndex[token].copy()
             # Just ignore the stopwords
             elif token in STOPWORDS:
                 negate = False
-                currentBits = result
+                currentBits = result.copy()
             else:
                 currentBits = BitArray(wordsIndex.files_count)
 
