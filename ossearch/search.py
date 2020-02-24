@@ -88,7 +88,8 @@ def evaluate_expr(expr, wordsIndex):
 
         if token == '(':
             closing_index = i + find_closing_paranthesis(expr[i:])
-            currentBits = evaluate_expr(expr[i + 1:closing_index], wordsIndex).copy()
+            currentBits = evaluate_expr(
+                expr[i + 1:closing_index], wordsIndex).copy()
             consume(iterator, closing_index - i)
 
         if is_word(token):
