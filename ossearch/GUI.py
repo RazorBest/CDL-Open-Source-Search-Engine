@@ -272,10 +272,13 @@ class MyFrame(wx.Frame):
         
         self.fileManager.UpdateResults(files)
 
-if __name__ == '__main__':
+def main():
     dirIndex = loader.load_words_index()
 
     app = wx.App(False)
     frame = MyFrame(None, dirIndex=dirIndex)
 
     app.MainLoop()
+
+if __name__ == '__main__':
+    main()
