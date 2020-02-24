@@ -27,7 +27,11 @@ $ sudo ./install.sh
 ```
 
 #### Manual installation
-If the script fails, you'll need to install the package manually.
+If the script fails, you'll need to install the package manually with:
+```
+$ sudo -H pip3 install .
+```
+In the project directory
 
 
 You can install a package with pip like this:
@@ -46,7 +50,42 @@ $ pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubu
 ```
 Or find the correpsonding wheel for your OS.
   
- 
+## How to use
+To start the GUI, type "ossearch" in the terminal
+```
+$ ossearch
+```
+To start the shell, type
+```
+$ ossearch shell
+```
+### Using the shell
+First time, you'll need to add a directory(or more) in which ossearch will look for queries:
+```
+>>> load example_docs
+>>> load path/to/direcyoty
+```
+Next time you run shell, the directories will be already loaded, so you have to load a directory just once, if you don't modify it. Ossearch will keep the loaded data in $HOME/.ossearch_data
+
+To list the loaded directories use:
+```
+>>> list
+example_docs
+path/to/directory
+```
+
+To remove a loaded directory use:
+```
+>>> remove example_docs
+```
+
+To search using a query use "search [query]":
+```
+>>> search linux && torvalds
+```
+You can always type "help" to see the available commands
+
+### How construct a query
 
 ## Running the tests
 To run a "test_file.py" use:
