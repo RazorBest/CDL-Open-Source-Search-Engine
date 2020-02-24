@@ -4,7 +4,7 @@ sudo apt install python3-pip
 if [ $? != 0 ]; then
 	exit 1
 fi
-sudo -H pip3 install -e .
+sudo -H pip3 install .
 if [ $? != 0 ]; then
 	exit 1
 fi
