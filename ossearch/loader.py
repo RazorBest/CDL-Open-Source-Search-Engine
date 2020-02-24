@@ -7,7 +7,7 @@ import hashlib
 
 
 HOME = str(Path.home())
-DATA_DIRECTORY = HOME + '/.data/'
+DATA_DIRECTORY = HOME + '/.ossearch_data/'
 # Words that are too common and are ignored
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
