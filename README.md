@@ -17,7 +17,6 @@ Clone the project:
  ```
  $ git clone https://github.com/RazorBest/CDL-Open-Source-Search-Engine ossearch
  $ cd ossearch
- 
  ```
 You can install Python from here: https://www.python.org/
 
