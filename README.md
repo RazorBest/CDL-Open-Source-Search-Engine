@@ -56,8 +56,26 @@ $ pip3 install bitstring
 To install **wxPython**, use:
 ```
 $ pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/ wxPython
+
 ```
 Or find the correpsonding wheel for your OS.
+
+To see if wxPython installed succesfully, try this:
+```
+$ python3
+Python 3.6.9 (default, Nov  7 2019, 10:44:02) 
+[GCC 8.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import wx
+>>> import wx.adv
+```
+If you don't get any errors, then you're ready.
+
+Otherwise, try to install this:
+```
+$ sudo apt install libsdl1.2debian
+```
+
   
 ## How to use ossearch
 To start the GUI, type "ossearch" in the terminal
