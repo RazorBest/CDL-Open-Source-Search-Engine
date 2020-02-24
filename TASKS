@@ -19,7 +19,7 @@ The CLI (cmd module):
 documents (the most important part) (Solved)
 
 The GUI (wxPython):
-    - Make all the CLI commands accessible through a GUI
+    - Make all the CLI commands accessible through a GUI (Solved)
 
 The testing:
     - Implement an exhaustive query search
