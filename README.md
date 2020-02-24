@@ -65,7 +65,7 @@ First time, you'll need to add a directory(or more) in which ossearch will look 
 >>> load example_docs
 >>> load path/to/direcyoty
 ```
-Next time you run shell, the directories will be already loaded, so you have to load a directory just once, if you don't modify it. Ossearch will keep the loaded data in $HOME/.ossearch_data
+Next time you run shell, the directories will be already loaded. So you have to load a directory just once, if you don't modify it. Ossearch will keep the loaded data in $HOME/.ossearch_data
 
 To list the loaded directories use:
 ```
