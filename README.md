@@ -82,7 +82,11 @@ To remove a loaded directory use:
 
 To search using a query use "search [query]":
 ```
->>> search linux && torvalds
+>>> search linux &&programming || (torvalds && linux)
+Found:
+    example_docs/doc03.txt
+    example_docs/doc05.txt
+    example_docs/doc11.txt
 ```
 You can always type "help" to see the available commands
 
