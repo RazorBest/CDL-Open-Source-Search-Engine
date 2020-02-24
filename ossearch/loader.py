@@ -1,10 +1,13 @@
 import os
+from pathlib import Path
 import re
 from bitstring import BitArray
 import pickle
 import hashlib
 
-DATA_DIRECTORY = '.data/'
+
+HOME = str(Path.home())
+DATA_DIRECTORY = HOME + '/.data/'
 # Words that are too common and are ignored
 STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
              'not', 'on', 'one', 'the', 'to']
@@ -124,6 +127,8 @@ def load_words_index(directories=[]):
         return directoryIndex
 
     # Load the indexes from teh preloaded wordIndexes from DATA_DIRECTORY
+    if not os.path.isdir(DATA_DIRECTORY):
+        os.mkdir(DATA_DIRECTORY)
     ids = os.listdir(DATA_DIRECTORY)
 
     for dir_id in ids:
