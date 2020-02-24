@@ -45,7 +45,9 @@ class SearchBar(wx.SearchCtrl):
 class FileList(wx.ListBox):
     def __init__(self, parent, **kwargs):
         kwargs['size'] = (170, 100)
-        kwargs['style'] = wx.ALIGN_RIGHT
+        if not 'style' in kwargs:
+            kwargs['style'] = 0
+        kwargs['style'] |= wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
 
         self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnDoubleClick)
@@ -120,8 +122,7 @@ class DirectoryChooser(wx.Panel):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
         dirnames = [wIndex.directoryPath for wIndex in dirIndex.values()]
-        # , style=wx.BORDER_NONE)
-        self.fileList = FileList(self, choices=dirnames)
+        self.fileList = FileList(self, choices=dirnames, style=wx.BORDER_NONE)
         self.sizer.Add(self.fileList, 1, flag=wx.EXPAND)
 
         self.editPanel = EditPanel(self)
