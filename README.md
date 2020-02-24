@@ -31,8 +31,9 @@ If the script fails, you'll need to install the package manually with:
 ```
 $ sudo -H pip3 install .
 ```
-In the project directory
+in the project directory.
 
+After that, you'll need to install the dependecies.
 
 You can install a package with pip like this:
 ```
