@@ -92,11 +92,11 @@ Found:
 You can always type "help" to see the available commands
 
 ### How construct a query
-* For a one word search type that word. Eg.: "search linux" will find all the directories that contain the words "linux"
-* Use the "&&" operator for stacking words: "search linux && torvalds" will search for directories that contain "linux" AND "torvalds"
-* Use the "||" operator for choice: "search linux || programming" will find the directories that contain "linux" OR "programming"
-* Use the "!" operator before an expression to negate it: "search !linux" will find all the directories that do not contain the word "linux"
-* Use parantheses to combine expressions: ((linux || pc) && !(linus || torvalds)) && ((c || c++) && programming)
+* For a one word search type that word. Eg.: "**search linux**" will find all the directories that contain the words "linux"
+* Use the **"&&"** operator for stacking words: **"search linux && torvalds"** will search for directories that contain "linux" AND "torvalds"
+* Use the **"||"** operator for choice: **"search linux || programming"** will find the directories that contain "linux" OR "programming"
+* Use the **"!"** operator before an expression to negate it: **"search !linux"** will find all the directories that do not contain the word "linux"
+* Use parantheses to combine expressions: **((linux || pc) && !(linus || torvalds)) && ((c || c++) && programming)**
 
 ## Running the tests
 To run a "test_file.py" use:
