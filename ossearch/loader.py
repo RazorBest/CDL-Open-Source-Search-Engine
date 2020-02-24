@@ -14,6 +14,7 @@ STOPWORDS = ['a', 'and', 'every', 'for', 'from', 'in', 'is', 'it',
 
 
 class DirectoryInvertedIndex:
+    """A data structure for storing words from files in a directory"""
     def __init__(self, directoryPath, filenames):
         self.wordsIndex = {}
         self.directoryPath = directoryPath
@@ -67,6 +68,7 @@ def load_files(directory):
     # The data structure that keeps our words
 
     files = get_sorted_filenames(directory)
+    # This is the data structure that we use for storing directory data
     wordsIndex = DirectoryInvertedIndex(directory, files)
 
     # Read every file in the files list
@@ -109,7 +111,7 @@ def load_words_index_from_directory(directoryPath):
 
 def load_words_index(directories=[]):
     """Returns a dict of Inverted Indexes corresponding 
-        to the files of each directory from the directories list (or string)
+        to the files of each directory from the directories list (or string).
     If directories is empty, load all the data from DATA_DIRECTORY 
     """
     directoryIndex = {}
@@ -126,7 +128,7 @@ def load_words_index(directories=[]):
 
         return directoryIndex
 
-    # Load the indexes from teh preloaded wordIndexes from DATA_DIRECTORY
+    # Load the indexes from the preloaded wordIndexes from DATA_DIRECTORY
     if not os.path.isdir(DATA_DIRECTORY):
         os.mkdir(DATA_DIRECTORY)
     ids = os.listdir(DATA_DIRECTORY)
