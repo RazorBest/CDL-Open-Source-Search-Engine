@@ -77,9 +77,6 @@ def evaluate_expr(expr, wordsIndex):
     negate = False
     state = ''
 
-    print(wordsIndex['linux'].bin)
-    print(wordsIndex['programming'].bin)
-
     iterator = enumerate(expr)
     for i, token in iterator:
         if token == '!':
