@@ -101,7 +101,7 @@ You can always type "help" to see the available commands
 ## Running the tests
 To run a "test_file.py" use:
   ```
-  python -m unittest tests/[test_file.py]
+  python3 -m unittest tests/[test_file.py]
   
   ```
 
