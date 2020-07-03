@@ -17,7 +17,6 @@ Clone the project:
  ```
  $ git clone https://github.com/RazorBest/CDL-Open-Source-Search-Engine ossearch
  $ cd ossearch
- 
  ```
 You can install Python from here: https://www.python.org/
 
@@ -28,7 +27,14 @@ $ sudo ./install.sh
 ```
 
 #### Manual installation
-If the script fails, you'll need to install the package manually with:
+If the script fails, you'll need to install the package manually.
+If you don't have pip3 install it like this:
+```
+$ sudo apt update
+$ sudo apt install python3-pip
+```
+
+To install the package, use:
 ```
 $ sudo -H pip3 install .
 ```
@@ -49,8 +55,26 @@ $ pip3 install bitstring
 To install **wxPython**, use:
 ```
 $ pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04/ wxPython
+
 ```
 Or find the correpsonding wheel for your OS.
+
+To see if wxPython installed succesfully, try this:
+```
+$ python3
+Python 3.6.9 (default, Nov  7 2019, 10:44:02) 
+[GCC 8.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import wx
+>>> import wx.adv
+```
+If you don't get any errors, then you're ready.
+
+Otherwise, try to install this:
+```
+$ sudo apt install libsdl1.2debian
+```
+
   
 ## How to use ossearch
 To start the GUI, type "ossearch" in the terminal
@@ -101,7 +125,7 @@ You can always type "help" to see the available commands
 ## Running the tests
 To run a "test_file.py" use:
   ```
-  python -m unittest tests/[test_file.py]
+  python3 -m unittest tests/[test_file.py]
   
   ```
 
