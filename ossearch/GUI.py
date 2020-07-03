@@ -7,8 +7,11 @@ from . import loader
 from . import search
 
 
-LoadDirectoryCommandEvent, EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
-RemoveDirectoryCommandEvent, EVT_REMOVE_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
+LoadDirectoryCommandEvent, \
+    EVT_LOAD_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
+
+RemoveDirectoryCommandEvent, \
+    EVT_REMOVE_DIRECTORY_COMMAND_EVENT = wx.lib.newevent.NewCommandEvent()
 
 
 class TitleWindow(wx.StaticText):
@@ -45,7 +48,7 @@ class SearchBar(wx.SearchCtrl):
 class FileList(wx.ListBox):
     def __init__(self, parent, **kwargs):
         kwargs['size'] = (170, 100)
-        if not 'style' in kwargs:
+        if 'style' not in kwargs:
             kwargs['style'] = 0
         kwargs['style'] |= wx.ALIGN_RIGHT
         wx.ListBox.__init__(self, parent, **kwargs)
@@ -157,7 +160,7 @@ class DirectoryChooser(wx.Panel):
         directory = self.fileList.GetSelectedString()
         self.fileList.DeleteSelection()
 
-        if directory == None:
+        if directory is None:
             return
 
         # create the event
@@ -184,6 +187,7 @@ class FileManager(wx.Window):
     def UpdateResults(self, choices):
         self.fileList.Set(choices)
 
+
 class HeaderWindow(wx.Window):
     def __init__(self, *args, **kwargs):
         wx.Window.__init__(self, *args, **kwargs)
@@ -195,11 +199,13 @@ class HeaderWindow(wx.Window):
         self.text1 = wx.StaticText(self, label="Search Results:")
         self.sizer.Add(self.text1, 1, wx.EXPAND)
 
-        self.text2 = wx.StaticText(self, size=(300, 20), label="Directory Index:")
+        self.text2 = wx.StaticText(self, size=(300, 20),
+                                   label="Directory Index:")
         self.sizer.Add(self.text2, 0, wx.EXPAND)
 
         self.SetSizerAndFit(self.sizer)
         self.sizer.Fit(self)
+
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, dirIndex):
@@ -220,13 +226,14 @@ class MyFrame(wx.Frame):
         self.sizer.AddSpacer(10)
         self.searchBar = SearchBar(self, style=wx.TE_PROCESS_ENTER)
         self.sizer.Add(self.searchBar, 0, wx.EXPAND | wx.ALIGN_CENTER)
-        
+
         # Add the headers
         self.sizer.AddSpacer(18)
         self.headerWindow = HeaderWindow(self)
         self.sizer.Add(self.headerWindow, 0, wx.EXPAND)
 
-        # Add the space in which are shown the search results and the directory index
+        # Add the space in which are shown the search
+        #   results and the directory index
         self.sizer.AddSpacer(4)
         self.fileManager = FileManager(self, self.dirIndex)
         self.sizer.Add(self.fileManager, 1, wx.EXPAND)
@@ -266,12 +273,13 @@ class MyFrame(wx.Frame):
 
     def OnSearch(self, e):
         query = e.GetString()
-        
+
         files = []
         for wordsIndex in self.dirIndex.values():
             files.extend(search.search(query, wordsIndex))
-        
+
         self.fileManager.UpdateResults(files)
+
 
 def main():
     dirIndex = loader.load_words_index()
@@ -280,6 +288,7 @@ def main():
     frame = MyFrame(None, dirIndex=dirIndex)
 
     app.MainLoop()
+
 
 if __name__ == '__main__':
     main()
